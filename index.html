@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fazendinha Kids Ao Vivo 🌾🐮</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #48bb78;
+      --primary-dark: #2f855a;
+      --accent: #ed8936;
+      --accent-yellow: #ecc94b;
+      --sky-blue: #63b3ed;
+      --cream: #fffaf0;
+      --wood: #9c4221;
+      --text: #2d3748;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .farm-title {
+      font-family: 'Fredoka', cursive, sans-serif;
+    }
+
+    /* Top Sky & Clouds Banner */
+    header {
+      background: linear-gradient(180deg, #68d391 0%, #38a169 100%);
+      color: white;
+      padding: 1.5rem 1rem 2.5rem;
+      text-align: center;
+      position: relative;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      box-shadow: 0 8px 20px rgba(47, 133, 90, 0.25);
+    }
+
+    .badge-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: #e53e3e;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+      animation: pulse 2s infinite;
+    }
+
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      background-color: white;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.98); opacity: 0.9; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(0.98); opacity: 0.9; }
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.15);
+      margin-bottom: 0.25rem;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #feebc8;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+    }
+
+    /* Video / Live Player Simulation */
+    .live-section {
+      background: white;
+      border-radius: 24px;
+      padding: 1.25rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      margin-top: -1.5rem;
+      position: relative;
+      border: 3px solid #e2e8f0;
+    }
+
+    .video-viewport {
+      background: #1a202c;
+      border-radius: 18px;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+    }
+
+    .scenery-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .video-overlay-info {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .cam-tag {
+      background: rgba(0, 0, 0, 0.65);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .main-stage-animal {
+      font-size: 4.8rem;
+      z-index: 2;
+      animation: floatAnimal 3s ease-in-out infinite;
+      cursor: pointer;
+      user-select: none;
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,0.3));
+    }
+
+    @keyframes floatAnimal {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    .stage-bubble {
+      background: white;
+      color: #2d3748;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.1rem;
+      padding: 8px 16px;
+      border-radius: 16px;
+      margin-top: 10px;
+      font-weight: 700;
+      z-index: 2;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .stage-bubble::after {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 0 8px 8px 8px;
+      border-style: solid;
+      border-color: transparent transparent white transparent;
+    }
+
+    /* Camera Switcher Buttons */
+    .cam-controls {
+      display: flex;
+      gap: 8px;
+      margin-top: 1rem;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .cam-btn {
+      flex: 1;
+      min-width: 130px;
+      background: #edf2f7;
+      border: 2px solid transparent;
+      padding: 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #4a5568;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .cam-btn:hover, .cam-btn.active {
+      background: #e6fffa;
+      border-color: #38b2ac;
+      color: #234e52;
+      transform: translateY(-2px);
+    }
+
+    /* Soundboard / Animals Section */
+    .section-title {
+      font-size: 1.6rem;
+      color: #2f855a;
+      margin: 2rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .animals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 14px;
+    }
+
+    .animal-card {
+      background: white;
+      border: 3px solid #edf2f7;
+      border-radius: 20px;
+      padding: 1rem 0.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+    }
+
+    .animal-card:active {
+      transform: scale(0.95);
+    }
+
+    .animal-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+      border-color: #68d391;
+    }
+
+    .animal-card .emoji {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .animal-card .name {
+      font-weight: 800;
+      color: #2d3748;
+      font-size: 1rem;
+    }
+
+    .animal-card .sound-tag {
+      font-size: 0.75rem;
+      color: #718096;
+      font-weight: 700;
+      background: #f7fafc;
+      padding: 2px 6px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    /* Schedule Section */
+    .schedule-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      border: 2px solid #e2e8f0;
+    }
+
+    .schedule-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .schedule-item:last-child {
+      border-bottom: none;
+    }
+
+    .time-badge {
+      background: #feebc8;
+      color: #c05621;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .schedule-desc {
+      font-weight: 700;
+      color: #4a5568;
+    }
+
+    /* Interactive Fun Actions */
+    .action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 1.5rem 0;
+    }
+
+    .btn-action {
+      flex: 1;
+      min-width: 140px;
+      background: linear-gradient(135deg, #ed8936, #dd6b20);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 16px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(221, 107, 32, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-action.secondary {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+    }
+
+    .btn-action:active {
+      transform: scale(0.97);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #718096;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    footer a {
+      color: #38a169;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge-live">
+      <span class="live-dot"></span>
+      Transmissão Ao Vivo
+    </div>
+    <h1>Fazendinha Kids Ao Vivo 🌾</h1>
+    <p>Venha ver os bichinhos e se divertir na fazenda!</p>
+  </header>
+
+  <main class="container">
+
+    <!-- Câmera Ao Vivo Interativa -->
+    <section class="live-section">
+      <div class="video-viewport" id="viewport">
+        <canvas class="scenery-canvas" id="canvas"></canvas>
+        <div class="video-overlay-info">
+          <span class="cam-tag" id="activeCamName">📹 Câmera 1: O Celeiro dos Bichos</span>
+        </div>
+        <div class="main-stage-animal" id="stageAnimal" onclick="interactAnimal()">🐮</div>
+        <div class="stage-bubble" id="speechBubble">Muuu! Bem-vindo à Fazendinha! Toque em mim!</div>
+      </div>
+
+      <div class="cam-controls">
+        <button class="cam-btn active" onclick="switchCam(1, '🐮', '📹 Câmera 1: Celeiro dos Bichos', 'Muuu! Bem-vindo ao Celeiro!', this)">
+          🏠 Celeiro
+        </button>
+        <button class="cam-btn" onclick="switchCam(2, '🦆', '📹 Câmera 2: Lago dos Patinhos', 'Quack quack! A água está fresquinha!', this)">
+          🌊 Lago dos Patos
+        </button>
+        <button class="cam-btn" onclick="switchCam(3, '🐴', '📹 Câmera 3: Pasto Alegre', 'Iiii-róó! Venha correr no pasto!', this)">
+          🌱 Pasto dos Cavalos
+        </button>
+        <button class="cam-btn" onclick="switchCam(4, '🐥', '📹 Câmera 4: Ninho dos Pintinhos', 'Piu piu! Hora da comidinha!', this)">
+          🌾 Ninho Feliz
+        </button>
+      </div>
+    </section>
+
+    <!-- Botões Rápidos de Interação -->
+    <div class="action-bar">
+      <button class="btn-action" onclick="feedAnimals()">
+        🥕 Dar Comidinha
+      </button>
+      <button class="btn-action secondary" onclick="singSong()">
+        🎵 Cantar uma Música
+      </button>
+    </div>
+
+    <!-- Seção de Sons dos Bichinhos -->
+    <h2 class="section-title">🐾 Clique para Ouvir os Bichinhos</h2>
+    <div class="animals-grid">
+      <div class="animal-card" onclick="playSound('vaca', 'Muuu!')">
+        <span class="emoji">🐮</span>
+        <div class="name">Vaquinha</div>
+        <div class="sound-tag">Muuu!</div>
+      </div>
+
+      <div class="animal-card" onclick="playSound('cavalo', 'Iiii-róó!')">
+        <span class="emoji">🐴</span>
+        <div class="name">Cavalinho</div>
+        <div class="sound-tag">Relincho!</div>
+      </div>
+
+      <div class="animal-card" onclick="playSound('ovelha', 'Mééé!')">
+        <span class="emoji">🐑</span>
+        <div class="name">Ovelhinha</div>
+        <div class="sound-tag">Mééé!</div>
+      </div>
+
+      <div class="animal-card" onclick="playSound('porco', 'Oinc oinc!')">
+        <span class="emoji">🐷</span>
+        <div class="name">Porquinho</div>
+        <div class="sound-tag">Oinc Oinc!</div>
+      </div>
+
+      <div class="animal-card" onclick="playSound('pato', 'Quack quack!')">
+        <span class="emoji">🦆</span>
+        <div class="name">Patinho</div>
+        <div class="sound-tag">Quack!</div>
+      </div>
+
+      <div class="animal-card" onclick="playSound('galo', 'Cocoricó!')">
+        <span class="emoji">🐓</span>
+        <div class="name">Galo Canto</div>
+        <div class="sound-tag">Cocoricó!</div>
+      </div>
+
+      <div class="animal-card" onclick="playSound('pintinho', 'Piu piu piu!')">
+        <span class="emoji">🐥</span>
+        <div class="name">Pintinho</div>
+        <div class="sound-tag">Piu Piu!</div>
+      </div>
+
+      <div class="animal-card" onclick="playSound('cachorro', 'Au au au!')">
+        <span class="emoji">🐶</span>
+        <div class="name">Cão Pastor</div>
+        <div class="sound-tag">Au Au!</div>
+      </div>
+    </div>
+
+    <!-- Programação do Dia -->
+    <h2 class="section-title">📅 Programação do Dia</h2>
+    <div class="schedule-card">
+      <div class="schedule-item">
+        <span class="time-badge">09:00</span>
+        <div class="schedule-desc">🐣 Café da manhã com as galinhas e pintinhos</div>
+      </div>
+      <div class="schedule-item">
+        <span class="time-badge">11:30</span>
+        <div class="schedule-desc">🦆 Banho refrescante dos patinhos no laguinho</div>
+      </div>
+      <div class="schedule-item">
+        <span class="time-badge">14:00</span>
+        <div class="schedule-desc">📖 Momento das historinhas ao vivo com os bichinhos</div>
+      </div>
+      <div class="schedule-item">
+        <span class="time-badge">16:30</span>
+        <div class="schedule-desc">🥕 Lanche da tarde e cenourinhas para os cavalos</div>
+      </div>
+      <div class="schedule-item">
+        <span class="time-badge">18:00</span>
+        <div class="schedule-desc">🌙 Hora da cantiga de ninar no celeiro</div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>🌾 Fazendinha Kids Ao Vivo &copy; 2026 - Feito com amor para a garotada!</p>
+  </footer>
+
+  <script>
+    // Audio Context para sintetizar sons alegres
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // Gerador de bipes e sons amigáveis
+    function playBeepTone(freq, type = 'sine', duration = 0.25) {
+      const ctx = getAudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, ctx.currentTime);
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start();
+      osc.stop(ctx.currentTime + duration);
+    }
+
+    // Fala usando SpeechSynthesis em Português
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'pt-BR';
+        utterance.pitch = 1.3;
+        utterance.rate = 1.0;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // Interações
+    function switchCam(id, emoji, camName, speech, btn) {
+      document.querySelectorAll('.cam-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const stage = document.getElementById('stageAnimal');
+      const name = document.getElementById('activeCamName');
+      const bubble = document.getElementById('speechBubble');
+
+      stage.textContent = emoji;
+      name.textContent = camName;
+      bubble.textContent = speech;
+
+      playBeepTone(440, 'triangle', 0.15);
+      speakText(speech);
+    }
+
+    function interactAnimal() {
+      const bubble = document.getElementById('speechBubble');
+      const phrases = [
+        "Adoro fazer novos amigos aqui na fazenda!",
+        "Você sabia que os bichinhos adoram carinho?",
+        "Hoje o dia está lindo para brincar!",
+        "Muuuito feliz por ter você aqui assistindo!"
+      ];
+      const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+      bubble.textContent = randomPhrase;
+      playBeepTone(523.25, 'sine', 0.2);
+      speakText(randomPhrase);
+    }
+
+    function feedAnimals() {
+      const bubble = document.getElementById('speechBubble');
+      bubble.textContent = "Nhac nhac! Que delícia de comidinha! Obrigado! 🥕🍎";
+      playBeepTone(659.25, 'square', 0.3);
+      speakText("Nhac nhac! Que delícia de comidinha!");
+    }
+
+    function singSong() {
+      const bubble = document.getElementById('speechBubble');
+      bubble.textContent = "🎶 Seu Lobato tinha um sítio, ia-ia-ô! 🎶";
+      speakText("Seu Lobato tinha um sítio, ia-ia-ô!");
+    }
+
+    function playSound(animal, onomatopoeia) {
+      const bubble = document.getElementById('speechBubble');
+      bubble.textContent = onomatopoeia;
+
+      if (animal === 'vaca') {
+        playBeepTone(150, 'triangle', 0.6);
+      } else if (animal === 'cavalo') {
+        playBeepTone(300, 'sawtooth', 0.4);
+      } else if (animal === 'pintinho') {
+        playBeepTone(900, 'sine', 0.15);
+      } else {
+        playBeepTone(400, 'sine', 0.25);
+      }
+
+      speakText(onomatopoeia);
+    }
+
+    // Efeito sutil no canvas (estrelinhas/brilhos suaves no fundo)
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resize() {
+      width = canvas.width = canvas.parentElement.clientWidth;
+      height = canvas.height = canvas.parentElement.clientHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const particles = Array.from({ length: 25 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 2 + 1,
+      dx: (Math.random() - 0.5) * 0.5,
+      dy: (Math.random() - 0.5) * 0.5
+    }));
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+      particles.forEach(p => {
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
