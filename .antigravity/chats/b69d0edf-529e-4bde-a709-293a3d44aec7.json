@@ -64,6 +64,30 @@
       "created_at": "2026-11-07T21:34:18.050Z",
       "sender": "ios",
       "is_cancelled": false
+    },
+    {
+      "id": "a903f0bc-449c-44bf-b9bf-925a2b7ef110",
+      "role": "agent",
+      "content": "O arquivo `GEMINI.md` (ou `AGENTS.md`) serve para definir regras, padrões e comportamentos que o assistente de IA deve seguir automaticamente em um projeto.\n\nAqui está o passo a passo de como criá-lo e configurá-lo:\n\n---\n\n### 1. Onde criar o arquivo\nCrie um arquivo chamado exatamente **`GEMINI.md`** na **pasta raiz** do seu repositório ou projeto (no mesmo nível onde fica a pasta `.git`).\n\n> [!NOTE]\n> O assistente varre os diretórios até a raiz do repositório e carrega as regras do `GEMINI.md` automaticamente em todas as conversas daquele projeto.\n\n---\n\n### 2. Formato do arquivo\nO arquivo é escrito em **Markdown simples** (`.md`). Não é necessária nenhuma sintaxe complexa. Basta listar as instruções de forma clara.\n\n---\n\n### 3. Exemplo de Conteúdo\n\nVocê pode estruturar o arquivo assim:\n\n```markdown\n# Diretrizes do Projeto\n\n## 🌐 Idioma e Comunicação\n- Responder sempre em Português (Brasil).\n- Escrever mensagens de commit, documentação e comentários em português.\n\n## 🛠️ Tecnologias e Estilo\n- Usar HTML5 semântico e CSS moderno.\n- Manter o design responsivo para telas móveis.\n- Priorizar código limpo, modular e de fácil manutenção.\n\n## ⚠️ Restrições\n- Não remover scripts essenciais sem aviso.\n- Manter acessibilidade para leitores de tela quando possível.\n```\n\n---\n\n### 4. Como editar o arquivo neste projeto\nNeste repositório, o arquivo já está criado em [GEMINI.md](https://github.com/fazendinhakidsaovivo-droid/first-project/blob/main/GEMINI.md). \n\nVocê pode:\n- Pedir para eu adicionar novas regras diretamente por aqui no chat (ex: *\"Adicione no GEMINI.md uma regra para usar sempre Tailwind CSS\"*).\n- Ou editá-lo diretamente pelo editor do seu celular / GitHub. Tudo o que for salvo no arquivo passará a valer para as próximas respostas!",
+      "status": "completed",
+      "model": "gemini-3.8-flash-high",
+      "client_type": "gemini-bridge",
+      "parent_message_id": "840a4a47-330c-479a-aa10-7107ee0fcb34",
+      "created_at": "2026-11-07T21:34:34.501Z",
+      "sender": "macOS",
+      "is_cancelled": false
+    },
+    {
+      "id": "c5b91a78-1ab8-4494-af32-ab63bc9eacef",
+      "role": "user",
+      "content": "Quero que crie esse código de diretrizes para mim",
+      "status": "pending",
+      "model": "gemini-3.8-flash-high",
+      "client_type": "gemini-bridge",
+      "parent_message_id": null,
+      "created_at": "2026-11-07T21:35:39.216Z",
+      "sender": "ios",
+      "is_cancelled": false
     }
   ]
 }
